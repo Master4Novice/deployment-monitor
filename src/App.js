@@ -1,24 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { Container, Typography, Box } from '@mui/material';
+import DeploymentForm from './components/DeploymentForm';
+import DeploymentTable from './components/DeploymentTable';
 
 function App() {
+  const [deploymentData, setDeploymentData] = useState([]);
+  const [isLocked, setIsLocked] = useState(false);
+
+  const handleFormSubmit = (data) => {
+    setDeploymentData(data);
+    setIsLocked(true);
+  };
+
+  const handleStatusUpdate = (updatedData) => {
+    setDeploymentData(updatedData);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <Box my={4}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Deployment Support
+        </Typography>
+        {!isLocked && <DeploymentForm onSubmit={handleFormSubmit} />}
+        {isLocked && (
+          <DeploymentTable 
+            deploymentData={deploymentData} 
+            onStatusUpdate={handleStatusUpdate} 
+          />
+        )}
+      </Box>
+    </Container>
   );
 }
 
